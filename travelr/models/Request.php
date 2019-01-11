@@ -11,7 +11,7 @@ use Yii;
  * @property string $destination
  * @property string $departure
  * @property string $datetime
- * @property string $from_to
+ * @property int $from_to
  * @property string $created
  * @property string $user_id__fk
  *
@@ -34,9 +34,8 @@ class Request extends \yii\db\ActiveRecord
     {
         return [
             [['datetime', 'created'], 'safe'],
-            [['user_id__fk'], 'integer'],
+            [['from_to', 'user_id__fk'], 'integer'],
             [['destination', 'departure'], 'string', 'max' => 50],
-            [['from_to'], 'string', 'max' => 4],
             [['user_id__fk'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id__fk' => 'user_id']],
         ];
     }
