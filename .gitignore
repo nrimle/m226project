@@ -69,8 +69,4 @@ fabric.properties
 
 .idea
 
-#vendor
-vendor/
-
-
 # End of https://www.gitignore.io/api/phpstorm
