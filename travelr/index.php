@@ -55,33 +55,33 @@ require_once("header.php");
 if (@testDatabaseConnection()) {
     ?>
     <div class="content center padding-16">
-        <form action="test.php" method="POST">
+        <form action="test.php" method="GET">
             <div class="container white padding-16">
-                <h2 style="margin: 0">Timetable</h2>
+                <h2 style="margin: 0">Search</h2>
                 <div class="row-padding" style="margin:0 -16px;">
                     <div class="ui-widget half">
                         <label for="from"> <b class="left label">From</b></label>
-                        <input class="input border" type="text" placeholder="Departure from" id="from"
+                        <input name="from" class="input border" type="text" placeholder="Departure from" id="from" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="ui-widget half">
                         <label for="to"> <b class="left label">To</b></label>
-                        <input class="input border" type="text" placeholder="Arriving at" id="to"
+                        <input name="to" class="input border" type="text" placeholder="Arriving at" id="to" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="half">
                         <label for="datepicker"><b class="left label">Date</b></label>
-                        <input type="text" id="datepicker">
+                        <input name="date" type="text" id="datepicker">
                     </div>
                     <div class="half">
                         <div class="almost-half">
                             <label for="timepicker"><b class="left label">Time</b></label>
-                            <input type="text" class="form-control" id="timepicker" value="" placeholder="Now">
+                            <input name="time" type="text" class="form-control" id="timepicker" value="" placeholder="Now">
                         </div>
                         <div class="more-than-half" id="fromto">
                             <label style="padding-right: 1%"><b>From</b></label>
                             <label class="switch" style="position: relative; top: -5px;">
-                                <input type="checkbox">
+                                <input name="fromto" type="checkbox">
                                 <span class="slider round"></span>
                             </label>
                             <label style="padding-left: 1%"><b>To</b></label>
@@ -89,7 +89,7 @@ if (@testDatabaseConnection()) {
                     </div>
                 </div>
                 <p>
-                    <input class="button dark-grey" type="submit" value="Submit">
+                    <input class="button theme" type="submit" value="Submit">
                 </p>
             </div>
         </form>
