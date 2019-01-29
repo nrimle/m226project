@@ -3,13 +3,7 @@ $from = isset($_GET['from']) ? $_GET['from'] : false;
 $to = isset($_GET['to']) ? $_GET['to'] : false;
 $date = isset($_GET['date']) ? $_GET['date'] : '';
 $time = !empty($_GET['time']) ? $_GET['time'] : date('H:i');
-$page = isset($_GET['page']) ? ((int)$_GET['page']) - 1 : 0;
-$c = isset($_GET['c']) ? (int)$_GET['c'] : false;
-if ($page == 0) {
-    $limit = 5;
-} else {
-    $limit = 4;
-}
+
 $fromto = null;
 
 $search = $from && $to;
@@ -19,8 +13,7 @@ if ($search) {
         'to' => $to,
         'date' => $date,
         'time' => $time,
-        'page' => $page,
-        'limit' => $limit,
+        'limit' => 1,
     ];
     if (!empty($_GET['fromto'])) {
         $fromto = 1;
@@ -106,12 +99,12 @@ if (@testDatabaseConnection()) {
     ?>
     <div class="content center padding-16">
         <div class="container white padding-16" id="connection_table">
-            <h2 style="margin: 0">Timetable</h2>
+            <h2 style="margin: 0">Details</h2>
             <div class="row">
                 <div class="col-sm-7">
 
                     <?php if ($search && $response->connections) { ?>
-                        <table class="table connections">
+                        <table class="table connections" style="margin-bottom: 16px">
                             <colgroup>
                                 <col width="25%">
                                 <col width="50%">
@@ -127,53 +120,19 @@ if (@testDatabaseConnection()) {
                                 </th>
                             </tr>
                             </thead>
-                            <?php $j = 0;
-                            if ($page == 0) {
-                                $connections = array_slice($response->connections, 1);
-                            } else {
-                                $connections = $response->connections;
-                            }
-                            foreach ($connections as $connection) { ?>
-                                <?php $j++;
+                            <?php
 
+                            $connections = $response->connections;
+                            foreach ($connections as $connection) { ?>
+                                <?php
                                 /**
                                  * ToDo: Display message if no connection could be found
                                  * */
                                 ?>
                                 <tbody>
-                                <tr class="connection"<?php if ($j == $c) { ?> style="display: none;"<?php }; ?>
-                                    data-c="<?php echo $j; ?>">
-                                    <td>
-                                        <?php echo date('H:i', strtotime($connection->from->departure)); ?>
-                                        <?php if ($connection->from->delay) { ?>
-                                            <span style="color: #a20d0d;"><?php echo '+' . $connection->from->delay; ?></span>
-                                        <?php }; ?>
-                                        <br/>
-                                        <?php echo date('H:i', strtotime($connection->to->arrival)); ?>
-                                        <?php if ($connection->to->delay) { ?>
-                                            <span style="color: #a20d0d;"><?php echo '+' . $connection->to->delay; ?></span>
-                                        <?php }; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo (substr($connection->duration, 0, 2) > 0) ? htmlentities(trim(substr($connection->duration, 0, 2), '0')) . 'd ' : ''; ?>
-                                        <?php echo htmlentities(trim(substr($connection->duration, 3, 1), '0') . substr($connection->duration, 4, 4)); ?>
-                                        <br/>
-                                        <span class="muted">
-                                    <?php echo htmlentities(implode(', ', $connection->products)); ?>
-                                    </span>
-                                    </td>
-                                    <td class="right" style="margin-right: 20%; padding-right: 0;">
-                                        <?php if ($connection->from->prognosis->platform) { ?>
-                                            <span style="color: #a20d0d;"><?php echo htmlentities($connection->from->prognosis->platform, ENT_QUOTES, 'UTF-8'); ?></span>
-                                        <?php } else { ?>
-                                            <?php echo htmlentities($connection->from->platform, ENT_QUOTES, 'UTF-8'); ?>
-                                        <?php }; ?>
-                                        <br/>
-                                    </td>
-                                </tr>
-                                <?php $i = 0;
+                                <?php
                                 foreach ($connection->sections as $section) { ?>
-                                    <tr class="section"<?php if ($j != $c) { ?> style="display: none;"<?php }; ?>>
+                                    <tr class="section">
                                         <td rowspan="2">
                                             <?php echo date('H:i', strtotime($section->departure->departure)); ?>
                                             <?php if ($section->departure->delay) { ?>
@@ -191,7 +150,7 @@ if (@testDatabaseConnection()) {
                                             <?php }; ?>
                                         </td>
                                     </tr>
-                                    <tr class="section"<?php if ($j != $c) { ?> style="display: none;"<?php }; ?>>
+                                    <tr class="section">
                                         <td style="border-top: 0; padding: 4px 8px;" colspan="2">
                                         <span class="muted">
                                         <?php if ($section->journey) { ?>
@@ -202,7 +161,7 @@ if (@testDatabaseConnection()) {
                                         </span>
                                         </td>
                                     </tr>
-                                    <tr class="section"<?php if ($j != $c) { ?> style="display: none;"<?php }; ?>>
+                                    <tr class="section">
                                         <td style="border-top: 0;">
                                             <?php echo date('H:i', strtotime($section->arrival->arrival)); ?>
                                             <?php if ($section->arrival->delay) { ?>
@@ -221,60 +180,49 @@ if (@testDatabaseConnection()) {
                                         </td>
                                     </tr>
                                 <?php }; ?>
-                                <tr class="section"<?php if ($j != $c) { ?> style="display: none;"<?php }; ?>>
-                                    <td style="border-top: 0;">
-                                        <div class="col-xs-6">
-                                            <a id="connection_button" class="button blue-grey left"
-                                               href="details.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">Details</a>
+                                <tr class="section">
+                                    <td style="border-top: 0; padding-bottom: 0;" colspan="2">
+                                        <div class="tooltip" style="margin-right: calc(5% - 8px)">
+                                            <button id="connection_button" class="button blue-gray left" onclick="copy()"
+                                                    onmouseout="outFunc()">
+                                                <span class="tooltiptext"
+                                                      id="copyinfo"><input class="copy_link" value='<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"?>' id='url' readonly></span>
+                                                Copy link
+                                            </button>
                                         </div>
                                     </td>
-                                    <td style="border-top: 0;">
-
-                                    </td>
-                                    <td style="border-top: 0;">
-                                        <div class="col-xs-6" style="margin-right: calc(20% - 8px)">
+                                    <td style="border-top: 0;  padding-bottom: 0;">
+                                        <div class="col-xs-6" style="margin-right: calc(5% - 8px);">
                                             <a id="connection_button" class="button blue-grey right"
-                                               href="test.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">Save</a>
+                                               href="test.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">Save</a>
                                         </div>
                                     </td>
                                 </tr>
                                 </tbody>
                             <?php }; ?>
                         </table>
-
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <a id="connection_button" class="button theme left"
-                                   href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page]), ENT_QUOTES, 'UTF-8'); ?>">Earlier
-                                    <u id="connection_text">connections</u></a>
-                            </div>
-                            <div class="col-xs-6 text-right">
-                                <a id="connection_button" class="button theme right"
-                                   href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page + 2]), ENT_QUOTES, 'UTF-8'); ?>">Later
-                                    <u id="connection_text">connections</u></a>
-                            </div>
-                        </div>
-                        <form style="display: none; visibility: hidden" class="pager">
-                            <input type="hidden" name="from"
-                                   value="<?php echo htmlentities($from, ENT_QUOTES, 'UTF-8'); ?>"/>
-                            <input type="hidden" name="to"
-                                   value="<?php echo htmlentities($to, ENT_QUOTES, 'UTF-8'); ?>"/>
-                            <input type="hidden" name="date"
-                                   value="<?php echo htmlentities($date, ENT_QUOTES, 'UTF-8'); ?>"/>
-                            <input type="hidden" name="time"
-                                   value="<?php echo htmlentities($time, ENT_QUOTES, 'UTF-8'); ?>"/>
-                            <input type="hidden" name="fromto"
-                                   value="<?php echo htmlentities($fromto, ENT_QUOTES, 'UTF-8'); ?>"/>
-                            <input type="hidden" name="page"
-                                   value="<?php echo htmlentities($page + 1, ENT_QUOTES, 'UTF-8'); ?>"/>
-                        </form>
-                    <?php } else {
-                        require("notfound.php");
-                    }?>
+                    <?php }; ?>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function copy() {
+            let copyText = document.getElementById("url");
+            copyText.select();
+            document.execCommand('copy');
+
+            console.log(copyText);
+
+            let tooltip = document.getElementById("copyinfo");
+            tooltip.innerHTML = "Copied link";
+        }
+
+        function outFunc() {
+            let tooltip = document.getElementById("copyinfo");
+            tooltip.innerHTML = "<input class='copy_link' value='<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"?>' id='url' readonly>";
+        }
+    </script>
     <?php
 } else {
     require_once("databaseError.php");

@@ -61,12 +61,12 @@ if (@testDatabaseConnection()) {
                 <div class="row-padding" style="margin:0 -16px;">
                     <div class="ui-widget half">
                         <label for="from"> <b class="left label">From</b></label>
-                        <input name="from" class="input border" type="text" placeholder="Departure from" id="from" required
+                        <input name="from" class="input border" type="text" placeholder="Departure from" id="from" value="<?php echo $_GET['from']?>" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="ui-widget half">
                         <label for="to"> <b class="left label">To</b></label>
-                        <input name="to" class="input border" type="text" placeholder="Arriving at" id="to" required
+                        <input name="to" class="input border" type="text" placeholder="Arriving at" id="to" value="<?php echo $_GET['to']?>" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="half">

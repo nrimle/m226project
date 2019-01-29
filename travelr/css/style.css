@@ -1765,6 +1765,11 @@ a {
         text-align: center;
         padding-top: 13px;
     }
+
+    #platform {
+        visibility: hidden;
+        display: none;
+    }
 }
 
 @media screen and (min-width: 600px) {
@@ -1785,6 +1790,11 @@ a {
 
     #title {
         text-align: center !important;
+    }
+
+    #pl {
+        visibility: hidden;
+        display: none;
     }
 }
 
@@ -2093,5 +2103,66 @@ input:checked + .slider:before {
 }
 
 #connection_button {
-    margin: 8px 16px;
+    margin-top: 16px;
+}
+
+table.connections tr.section {
+    background-color: #f3f3f3;
+    cursor: default;
+}
+
+table.connections tr.connection {
+    background-color: #fafafa;
+}
+
+tbody {
+    border: 1px solid #e0e0e0;
+}
+
+#copyright {
+    text-decoration: line-through
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 85%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #555;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.copy_link {
+    background-color: #555;
+    padding: 0;
+    border: 0;
+    color: #fff;
 }
