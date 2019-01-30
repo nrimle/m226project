@@ -105,7 +105,7 @@ require_once("header.php");
 if (@testDatabaseConnection()) {
     ?>
     <div class="content center padding-16">
-        <div class="container white padding-16" id="connection_table">
+        <div class="container white padding-16" id="table_border">
             <h2 style="margin: 0">Timetable</h2>
             <div class="row">
                 <div class="col-sm-7">
@@ -253,12 +253,12 @@ if (@testDatabaseConnection()) {
                         <div class="row">
                             <div class="col-xs-6">
                                 <a id="page_button" class="button theme left"
-                                   href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page]), ENT_QUOTES, 'UTF-8'); ?>">Earlier
+                                   href="timetable.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page]), ENT_QUOTES, 'UTF-8'); ?>">Earlier
                                     <u id="connection_text">connections</u></a>
                             </div>
                             <div class="col-xs-6 text-right">
                                 <a id="page_button" class="button theme right"
-                                   href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page + 2]), ENT_QUOTES, 'UTF-8'); ?>">Later
+                                   href="timetable.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page + 2]), ENT_QUOTES, 'UTF-8'); ?>">Later
                                     <u id="connection_text">connections</u></a>
                             </div>
                         </div>

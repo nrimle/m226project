@@ -4,8 +4,6 @@ require_once("include/databaseFunctions.php");
 <!DOCTYPE html>
 <html>
 <head>
-    <!--<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" />-->
-
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
     <script src="./include/jquery-clockpicker.min.js"></script>
@@ -55,18 +53,20 @@ require_once("header.php");
 if (@testDatabaseConnection()) {
     ?>
     <div class="content center padding-16">
-        <form action="test.php" method="GET">
+        <form action="timetable.php" method="GET">
             <div class="container white padding-16">
                 <h2 style="margin: 0">Search</h2>
                 <div class="row-padding" style="margin:0 -16px;">
                     <div class="ui-widget half">
                         <label for="from"> <b class="left label">From</b></label>
-                        <input name="from" class="input border" type="text" placeholder="Departure from" id="from" value="<?php echo $_GET['from']?>" required
+                        <input name="from" class="input border" type="text" placeholder="Departure from" id="from"
+                               value="<?php echo $_GET['from'] ?>" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="ui-widget half">
                         <label for="to"> <b class="left label">To</b></label>
-                        <input name="to" class="input border" type="text" placeholder="Arriving at" id="to" value="<?php echo $_GET['to']?>" required
+                        <input name="to" class="input border" type="text" placeholder="Arriving at" id="to"
+                               value="<?php echo $_GET['to'] ?>" required
                                style="font-size: 15px"/>
                     </div>
                     <div class="half">
@@ -76,7 +76,8 @@ if (@testDatabaseConnection()) {
                     <div class="half">
                         <div class="almost-half">
                             <label for="timepicker"><b class="left label">Time</b></label>
-                            <input name="time" type="text" class="form-control" id="timepicker" value="" placeholder="Now">
+                            <input name="time" type="text" class="form-control" id="timepicker" value=""
+                                   placeholder="Now">
                         </div>
                         <div class="more-than-half" id="fromto">
                             <label style="padding-right: 1%"><b>From</b></label>
@@ -105,7 +106,6 @@ if (@testDatabaseConnection()) {
         Date.prototype.toDateInputValue = (function () {
             let local = new Date(this);
             local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-            //return local.toJSON().slice(0, 10);
             return local.toLocaleDateString();
         });
 

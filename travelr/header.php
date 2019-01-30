@@ -17,7 +17,7 @@ if ("$_SERVER[REQUEST_URI]" == "/m226project/travelr/header.php" || "$_SERVER[RE
                         $name = getFirstName($uid);
                         ?>
                         <p>Hi, <?php echo $name['first_name'] ?></p>
-                        <a href="test.php">Saved requests</a>
+                        <a href="saved.php">Saved requests</a>
                         <a href="logout.php">Logout</a>
                         <?php
                     } else {

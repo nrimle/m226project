@@ -76,4 +76,26 @@ if ("$_SERVER[REQUEST_URI]" == "/m226project/travelr/include/databaseFunctions.p
         }
         return $result;
     }
+
+    function getAllRequests($uid)
+    {
+        $all = [];
+        global $databaseParams;
+        $result = $databaseParams->query("SELECT * FROM request WHERE user_id__fk = '$uid'");
+        while ($request = mysqli_fetch_array($result)){
+            $all[] = $request;
+        }
+        return $all;
+
+    }
+    function getRequestOwner($rid){
+        global $databaseParams;
+        $result = $databaseParams->query("SELECT user_id__fk AS owner FROM request WHERE request_id = '$rid'");
+        return mysqli_fetch_assoc($result);
+    }
+
+    function deleteRequest($rid){
+        global $databaseParams;
+        $databaseParams->query("DELETE FROM request WHERE request_id = '$rid'");
+    }
 }

@@ -70,7 +70,7 @@ if (@testDatabaseConnection()) {
 
                 $dateformat = date_format(date_create($date), 'Y-m-d');
                 $fromtosave = isset($fromto) ? $fromto : 0;
-                $test = saveRequest($_SESSION['uid'], $from, $to, $dateformat, $time, $fromtosave);
+                saveRequest($_SESSION['uid'], $from, $to, $dateformat, $time, $fromtosave);
             }
         }
         $url = 'https://transport.opendata.ch/v1/connections?' . http_build_query($query);
@@ -103,7 +103,7 @@ if (@testDatabaseConnection()) {
     }
     ?>
     <div class="content center padding-16">
-        <div class="container white padding-16" id="connection_table">
+        <div class="container white padding-16" id="table_border">
             <h2 style="margin: 0">Details</h2>
             <?php if (isset($_POST['save'])) { ?>
                 <div>
