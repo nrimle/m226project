@@ -2103,7 +2103,11 @@ input:checked + .slider:before {
 }
 
 #connection_button {
-    margin-top: 16px;
+    margin: 8px 0;
+}
+
+#page_button {
+    margin: 16px 0;
 }
 
 table.connections tr.section {
@@ -2123,6 +2127,13 @@ tbody {
     text-decoration: line-through
 }
 
+#saved_info {
+    background-color: #4CAF50;
+    color: #fff;
+    size: auto;
+    padding: 5px;
+}
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -2138,9 +2149,8 @@ tbody {
     padding: 5px;
     position: absolute;
     z-index: 1;
-    bottom: 85%;
-    left: 50%;
-    margin-left: -75px;
+    bottom: 95%;
+    left: -50%;
     opacity: 0;
     transition: opacity 0.3s;
 }

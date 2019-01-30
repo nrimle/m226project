@@ -233,8 +233,16 @@ if (@testDatabaseConnection()) {
                                     </td>
                                     <td style="border-top: 0;">
                                         <div class="col-xs-6" style="margin-right: calc(20% - 8px)">
-                                            <a id="connection_button" class="button blue-grey right"
-                                               href="test.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">Save</a>
+                                            <?php if (isset($_SESSION['uid'])) {
+                                                ?>
+                                                <form method="post"
+                                                      action="details.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <input type="hidden" name="save" value="true">
+                                                    <input class="button blue-gray right" type="submit" value="Save" id="connection_button">
+                                                </form>
+                                                <?php
+                                            }
+                                            ?>
                                         </div>
                                     </td>
                                 </tr>
@@ -244,12 +252,12 @@ if (@testDatabaseConnection()) {
 
                         <div class="row">
                             <div class="col-xs-6">
-                                <a id="connection_button" class="button theme left"
+                                <a id="page_button" class="button theme left"
                                    href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page]), ENT_QUOTES, 'UTF-8'); ?>">Earlier
                                     <u id="connection_text">connections</u></a>
                             </div>
                             <div class="col-xs-6 text-right">
-                                <a id="connection_button" class="button theme right"
+                                <a id="page_button" class="button theme right"
                                    href="test.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => $date, 'time' => $time, 'page' => $page + 2]), ENT_QUOTES, 'UTF-8'); ?>">Later
                                     <u id="connection_text">connections</u></a>
                             </div>
@@ -270,7 +278,7 @@ if (@testDatabaseConnection()) {
                         </form>
                     <?php } else {
                         require("notfound.php");
-                    }?>
+                    } ?>
                 </div>
             </div>
         </div>

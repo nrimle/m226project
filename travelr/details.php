@@ -1,55 +1,4 @@
 <?php
-$from = isset($_GET['from']) ? $_GET['from'] : false;
-$to = isset($_GET['to']) ? $_GET['to'] : false;
-$date = isset($_GET['date']) ? $_GET['date'] : '';
-$time = !empty($_GET['time']) ? $_GET['time'] : date('H:i');
-
-$fromto = null;
-
-$search = $from && $to;
-if ($search) {
-    $query = [
-        'from' => $from,
-        'to' => $to,
-        'date' => $date,
-        'time' => $time,
-        'limit' => 1,
-    ];
-    if (!empty($_GET['fromto'])) {
-        $fromto = 1;
-        $query['isArrivalTime'] = $fromto;
-    }
-    $url = 'https://transport.opendata.ch/v1/connections?' . http_build_query($query);
-    $url = filter_var($url, FILTER_VALIDATE_URL);
-    $response = json_decode(file_get_contents($url));
-    if ($response->from) {
-        $from = $response->from->name;
-    }
-    if ($response->to) {
-        $to = $response->to->name;
-    }
-    if (isset($response->stations->from[0])) {
-        if ($response->stations->from[0]->score < 101) {
-            foreach (array_slice($response->stations->from, 1, 3) as $station) {
-                if ($station->score > 97) {
-                    $stationsFrom[] = $station->name;
-                }
-            }
-        }
-    }
-    if (isset($response->stations->to[0])) {
-        if ($response->stations->to[0]->score < 101) {
-            foreach (array_slice($response->stations->to, 1, 3) as $station) {
-                if ($station->score > 97) {
-                    $stationsTo[] = $station->name;
-                }
-            }
-        }
-    }
-}
-?>
-
-<?php
 require_once("include/databaseFunctions.php");
 ?>
 <!DOCTYPE html>
@@ -96,10 +45,73 @@ require_once("include/databaseFunctions.php");
 <?php
 require_once("header.php");
 if (@testDatabaseConnection()) {
+    $from = isset($_GET['from']) ? $_GET['from'] : false;
+    $to = isset($_GET['to']) ? $_GET['to'] : false;
+    $date = isset($_GET['date']) ? $_GET['date'] : '';
+    $time = !empty($_GET['time']) ? $_GET['time'] : '';
+
+    $fromto = null;
+
+    $search = $from && $to;
+    if ($search) {
+        $query = [
+            'from' => $from,
+            'to' => $to,
+            'date' => $date,
+            'time' => $time,
+            'limit' => 1,
+        ];
+        if (!empty($_GET['fromto'])) {
+            $fromto = 1;
+            $query['isArrivalTime'] = $fromto;
+        }
+        if (isset($_POST['save'])) {
+            if (isset($_SESSION['uid'])) {
+
+                $dateformat = date_format(date_create($date), 'Y-m-d');
+                $fromtosave = isset($fromto) ? $fromto : 0;
+                $test = saveRequest($_SESSION['uid'], $from, $to, $dateformat, $time, $fromtosave);
+            }
+        }
+        $url = 'https://transport.opendata.ch/v1/connections?' . http_build_query($query);
+        $url = filter_var($url, FILTER_VALIDATE_URL);
+        $response = json_decode(file_get_contents($url));
+        if ($response->from) {
+            $from = $response->from->name;
+        }
+        if ($response->to) {
+            $to = $response->to->name;
+        }
+        if (isset($response->stations->from[0])) {
+            if ($response->stations->from[0]->score < 101) {
+                foreach (array_slice($response->stations->from, 1, 3) as $station) {
+                    if ($station->score > 97) {
+                        $stationsFrom[] = $station->name;
+                    }
+                }
+            }
+        }
+        if (isset($response->stations->to[0])) {
+            if ($response->stations->to[0]->score < 101) {
+                foreach (array_slice($response->stations->to, 1, 3) as $station) {
+                    if ($station->score > 97) {
+                        $stationsTo[] = $station->name;
+                    }
+                }
+            }
+        }
+    }
     ?>
     <div class="content center padding-16">
         <div class="container white padding-16" id="connection_table">
             <h2 style="margin: 0">Details</h2>
+            <?php if (isset($_POST['save'])) { ?>
+                <div>
+                    <h4 id="saved_info">Saved connection</h4>
+                </div>
+                <?php
+                unset($_POST['save']);
+            } ?>
             <div class="row">
                 <div class="col-sm-7">
 
@@ -182,26 +194,39 @@ if (@testDatabaseConnection()) {
                                 <?php }; ?>
                                 <tr class="section">
                                     <td style="border-top: 0; padding-bottom: 0;" colspan="2">
-                                        <div class="tooltip" style="margin-right: calc(5% - 8px)">
-                                            <button id="connection_button" class="button blue-gray left" onclick="copy()"
+                                        <div class="tooltip">
+                                            <button id="connection_button" class="button blue-gray left"
+                                                    onclick="copy()"
                                                     onmouseout="outFunc()">
                                                 <span class="tooltiptext"
-                                                      id="copyinfo"><input class="copy_link" value='<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"?>' id='url' readonly></span>
+                                                      id="copyinfo"><input class="copy_link"
+                                                                           value='<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>'
+                                                                           id='url' readonly></span>
                                                 Copy link
                                             </button>
                                         </div>
                                     </td>
                                     <td style="border-top: 0;  padding-bottom: 0;">
-                                        <div class="col-xs-6" style="margin-right: calc(5% - 8px);">
-                                            <a id="connection_button" class="button blue-grey right"
-                                               href="test.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">Save</a>
+                                        <div class="col-xs-6">
+                                            <?php if (isset($_SESSION['uid'])) {
+                                                ?>
+                                                <form method="post"
+                                                      action="details.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <input type="hidden" name="save" value="true">
+                                                    <input class="button blue-gray right" type="submit" value="Save" id="connection_button">
+                                                </form>
+                                                <?php
+                                            }
+                                            ?>
                                         </div>
                                     </td>
                                 </tr>
                                 </tbody>
                             <?php }; ?>
                         </table>
-                    <?php }; ?>
+                    <?php } else {
+                        require("notfound.php");
+                    } ?>
                 </div>
             </div>
         </div>
@@ -220,7 +245,7 @@ if (@testDatabaseConnection()) {
 
         function outFunc() {
             let tooltip = document.getElementById("copyinfo");
-            tooltip.innerHTML = "<input class='copy_link' value='<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"?>' id='url' readonly>";
+            tooltip.innerHTML = "<input class='copy_link' value='<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"?>' id='url' readonly>";
         }
     </script>
     <?php
