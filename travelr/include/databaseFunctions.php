@@ -24,10 +24,10 @@ if ("$_SERVER[REQUEST_URI]" == "/m226project/travelr/include/databaseFunctions.p
             if (password_verify($password, $user['password'])) {
                 return $user[0];
             } else {
-                return 0;
+                return null;
             }
         } else {
-            return 0;
+            return null;
         }
     }
 
