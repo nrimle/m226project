@@ -63,8 +63,8 @@ if (@testDatabaseConnection()) {
                             <th>To</th>
                             <th class="date_time">Date</th>
                             <th class="date_time">Time</th>
-                            <th>View</th>
-                            <th>Delete</th>
+                            <th class="center">View</th>
+                            <th class="center">Delete</th>
                         </tr>
                         </thead>
                         <?php

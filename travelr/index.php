@@ -71,7 +71,7 @@ if (@testDatabaseConnection()) {
                     </div>
                     <div class="half">
                         <label for="datepicker"><b class="left label">Date</b></label>
-                        <input name="date" type="text" id="datepicker">
+                        <input autocomplete="off" name="date" type="text" id="datepicker">
                     </div>
                     <div class="half">
                         <div class="almost-half">
