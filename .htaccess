@@ -1,1 +1,1 @@
-ErrorDocument 404 /m226project/travelr/pageNotfound.php
+ErrorDocument 404 /travelr/pageNotfound.php

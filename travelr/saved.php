@@ -24,7 +24,7 @@ require_once("include/databaseFunctions.php");
         });
     </script>
 </head>
-<title>travelr</title>
+<title>travelr - Saved</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css" media="all">

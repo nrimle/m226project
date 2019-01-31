@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 30. Jan 2019 um 12:56
+-- Erstellungszeit: 31. Jan 2019 um 20:16
 -- Server-Version: 10.1.32-MariaDB
 -- PHP-Version: 7.2.5
 
@@ -30,13 +30,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `request` (
   `request_id`  bigint(20) NOT NULL,
-  `destination` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `departure`   varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `date`        date                         DEFAULT NULL,
-  `time`        time                         DEFAULT NULL,
-  `created`     timestamp  NOT NULL          DEFAULT CURRENT_TIMESTAMP,
-  `user_id__fk` bigint(20)                   DEFAULT NULL,
-  `from_to`     tinyint(1)                   DEFAULT NULL
+  `destination` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `departure`   varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `date`        date                          DEFAULT NULL,
+  `time`        time                          DEFAULT NULL,
+  `created`     timestamp  NOT NULL           DEFAULT CURRENT_TIMESTAMP,
+  `user_id__fk` bigint(20)                    DEFAULT NULL,
+  `from_to`     tinyint(1)                    DEFAULT NULL
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
@@ -96,14 +96,14 @@ ALTER TABLE `user`
 --
 ALTER TABLE `request`
   MODIFY `request_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 88;
+  AUTO_INCREMENT = 99;
 
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
   MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 41;
+  AUTO_INCREMENT = 44;
 
 --
 -- Constraints der exportierten Tabellen

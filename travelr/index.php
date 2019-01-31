@@ -37,7 +37,7 @@ require_once("include/databaseFunctions.php");
         });
     </script>
 </head>
-<title>travelr</title>
+<title>travelr - Search</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css" media="all">
@@ -71,12 +71,12 @@ if (@testDatabaseConnection()) {
                     </div>
                     <div class="half">
                         <label for="datepicker"><b class="left label">Date</b></label>
-                        <input autocomplete="off" name="date" type="text" id="datepicker">
+                        <input autocomplete="off" name="date" type="text" id="datepicker" class="border">
                     </div>
                     <div class="half">
                         <div class="almost-half">
                             <label for="timepicker"><b class="left label">Time</b></label>
-                            <input autocomplete="off" name="time" type="text" class="form-control" id="timepicker"
+                            <input autocomplete="off" name="time" type="text" class="form-control border" id="timepicker"
                                    value=""
                                    placeholder="Now">
                         </div>

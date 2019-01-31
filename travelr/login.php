@@ -3,7 +3,7 @@ require_once("include/databaseFunctions.php");
 ?>
 <!DOCTYPE html>
 <html>
-<title>travelr</title>
+<title>travelr - Login</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css" media="all">
