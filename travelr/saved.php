@@ -37,23 +37,24 @@ require_once("include/databaseFunctions.php");
 require_once("header.php");
 if (@testDatabaseConnection()) {
 
-    if (isset($_GET['delete'])) {
-        $owner = getRequestOwner($_GET['delete']);
-        if ($owner['owner'] == $_SESSION['uid']) {
-            deleteRequest($_GET['delete']);
-        } else {
-            ?>
-            <script>
-                window.alert("You are not permitted to delete this object!")
-            </script>
-            <?php
-        }
-    }
+if (isset($_GET['delete'])) {
+    $owner = getRequestOwner($_GET['delete']);
+if ($owner['owner'] == $_SESSION['uid']) {
+    deleteRequest($_GET['delete']);
+    header('Location: saved.php');
+} else {
     ?>
+    <script>
+        window.alert("You are not permitted to delete this object!")
+    </script>
+<?php
+}
+}
+?>
     <div class="content center padding-16">
-        <div class="container white padding-16" id="table_border">
+        <div class="container white padding-16" id="table_border" style="padding-bottom: 16px !important;">
             <h2 style="margin: 0">Saved</h2>
-            <div class="row-padding" style="margin:0 -16px; overflow-x: auto;">
+            <div class="row-padding" style="overflow-x: auto;">
                 <table class="table connections">
                     <thead>
                     <tr>
@@ -74,24 +75,27 @@ if (@testDatabaseConnection()) {
                     $to = $request['destination'];
                     $date = $request['date'];
                     $time = $request['time'];
+                    $fromto = $request['fromto'];
                     ?>
                     <tbody>
-                    <tr class="connection clickable-row" data-href="index.php">
+                    <tr class="connection" data-href="index.php">
                         <td>
-                            <?php echo $request['departure'] ?>
+                            <?php echo $from ?>
                         </td>
                         <td>
-                            <?php echo $request['destination'] ?>
+                            <?php echo $to ?>
                         </td>
                         <td class="date_time">
-                            <?php echo date("d.m.Y", strtotime($request['date'])) ?>
+                            <?php echo date("d.m.Y", strtotime($date)) ?>
                         </td>
                         <td class="date_time">
-                            <?php echo date("H:i", strtotime($request['time'])) ?>
+                            <?php echo date("H:i", strtotime($time)) ?>
                         </td>
                         <td class="center">
-                            <a href="#">
+                            <a id="connection_button"
+                               href="details.php?<?php echo htmlentities(http_build_query(['from' => $from, 'to' => $to, 'fromto' => $fromto, 'date' => date("d.m.Y", strtotime($date)), 'time' => date("H:i", strtotime($time))]), ENT_QUOTES, 'UTF-8'); ?>">
                                 <img border="0" alt="View" src="images/eye.png" width="25" height="25">
+                            </a>
                         </td>
                         <td class="center">
                             <a href="saved.php?delete=<?php echo $request['request_id'] ?>">

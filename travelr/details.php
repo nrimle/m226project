@@ -76,30 +76,6 @@ if (@testDatabaseConnection()) {
         $url = 'https://transport.opendata.ch/v1/connections?' . http_build_query($query);
         $url = filter_var($url, FILTER_VALIDATE_URL);
         $response = json_decode(file_get_contents($url));
-        if ($response->from) {
-            $from = $response->from->name;
-        }
-        if ($response->to) {
-            $to = $response->to->name;
-        }
-        if (isset($response->stations->from[0])) {
-            if ($response->stations->from[0]->score < 101) {
-                foreach (array_slice($response->stations->from, 1, 3) as $station) {
-                    if ($station->score > 97) {
-                        $stationsFrom[] = $station->name;
-                    }
-                }
-            }
-        }
-        if (isset($response->stations->to[0])) {
-            if ($response->stations->to[0]->score < 101) {
-                foreach (array_slice($response->stations->to, 1, 3) as $station) {
-                    if ($station->score > 97) {
-                        $stationsTo[] = $station->name;
-                    }
-                }
-            }
-        }
     }
     ?>
     <div class="content center padding-16">
@@ -213,7 +189,8 @@ if (@testDatabaseConnection()) {
                                                 <form method="post"
                                                       action="details.php?<?php echo htmlentities(http_build_query(['from' => $connection->from->station->name, 'to' => $connection->to->station->name, 'fromto' => $fromto, 'date' => date("d.m.Y", $connection->from->departureTimestamp), 'time' => date("H:i", $connection->from->departureTimestamp)]), ENT_QUOTES, 'UTF-8'); ?>">
                                                     <input type="hidden" name="save" value="true">
-                                                    <input class="button blue-gray right" type="submit" value="Save" id="connection_button">
+                                                    <input class="button blue-gray right" type="submit" value="Save"
+                                                           id="connection_button">
                                                 </form>
                                                 <?php
                                             }

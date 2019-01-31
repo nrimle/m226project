@@ -16,7 +16,13 @@ require_once("include/databaseFunctions.php");
 require_once("header.php");
 if (@testDatabaseConnection()) {
     if (isset($_SESSION['uid'])) {
-        echo "You are already registered!";
+        ?>
+        <div class="content center padding-16">
+            <h2>You are already registered.</h2>
+            <h4>Click <a href="index.php">here</a>
+                to go back to the Homepage.</h4>
+        </div>
+        <?php
     } else {
         $meldung = "";
         if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['RPpassword'])) {
@@ -64,7 +70,8 @@ if (@testDatabaseConnection()) {
 
                     <div class="padding-small">
                         <label for="email" class="left label"><b>Email</b></label>
-                        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="Enter Email" name="email" required>
+                        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="Enter Email"
+                               name="email" required>
                     </div>
 
                     <div class="half padding-small">

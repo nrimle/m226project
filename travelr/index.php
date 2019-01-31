@@ -2,7 +2,7 @@
 require_once("include/databaseFunctions.php");
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
@@ -76,16 +76,17 @@ if (@testDatabaseConnection()) {
                     <div class="half">
                         <div class="almost-half">
                             <label for="timepicker"><b class="left label">Time</b></label>
-                            <input name="time" type="text" class="form-control" id="timepicker" value=""
+                            <input autocomplete="off" name="time" type="text" class="form-control" id="timepicker"
+                                   value=""
                                    placeholder="Now">
                         </div>
                         <div class="more-than-half" id="fromto">
-                            <label style="padding-right: 1%"><b>From</b></label>
+                            <label for="fromto" style="padding-right: 1%"><b>From</b></label>
                             <label class="switch" style="position: relative; top: -5px;">
                                 <input name="fromto" type="checkbox">
                                 <span class="slider round"></span>
                             </label>
-                            <label style="padding-left: 1%"><b>To</b></label>
+                            <label for="fromto" style="padding-left: 1%"><b>To</b></label>
                         </div>
                     </div>
                 </div>
@@ -97,7 +98,7 @@ if (@testDatabaseConnection()) {
     </div>
     <script>
         let input = $('#timepicker').clockpicker({
-            placement: 'bottom',
+            placement: 'top',
             align: 'left',
             autoclose: true,
             'default': 'now'
