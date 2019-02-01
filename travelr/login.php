@@ -33,7 +33,7 @@ if (@testDatabaseConnection()) {
             $_SESSION['uid'] = $userID;
             header('Location: index.php');
         } else {
-            $meldung = "Login Daten sind nicht Korrekt!";
+            $meldung = "Email or password is wrong!";
         }
     }
     ?>

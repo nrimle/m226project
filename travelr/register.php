@@ -34,7 +34,7 @@ if (@testDatabaseConnection()) {
                 $password = '';
                 $RPpassword = '';
             } else {
-                $meldung = 'Bitte fühlen Sie alle Felder aus!';
+                $meldung = 'Pleas fill in all fields!';
             }
         } else {
             $firstname = $_POST['firstName'];
@@ -44,11 +44,11 @@ if (@testDatabaseConnection()) {
             $RPpassword = $_POST['RPpassword'];
 
             if ($password != $RPpassword) {
-                $meldung = "Bitte geben Sie zweimal das gleiche password ein!";
+                $meldung = "Repeated password does not match the first one!";
             } elseif (strlen($password) < 6) {
-                $meldung = "Das password sollte mindestens 6 Zeichen beinhalten!";
+                $meldung = "Your password should contain at least six characters!";
             } elseif (emailExists($email)) {
-                $meldung = "Email bereits vorhanden!";
+                $meldung = "Email already registered!";
             } else {
                 addUser($firstname, $lastname, $email, $password);
                 header('Location: login.php');
